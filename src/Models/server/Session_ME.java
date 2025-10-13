@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
@@ -406,16 +405,16 @@ public class Session_ME implements ISession {
         }
         if (this.isBackup) {
             try {
-                MySQL mySQL1 = MySQL.create();
-                MySQL mySQL2 = MySQL.create();
-                MySQL mySQL3 = MySQL.create();
-                MySQL mySQL4 = MySQL.create();
+                Database database1 = Database.create();
+                Database database2 = Database.create();
+                Database database3 = Database.create();
+                Database database4 = Database.create();
                 try {
                     try {
-                        mySQL1.getConnection().setAutoCommit(false);
-                        mySQL2.getConnection().setAutoCommit(false);
-                        mySQL3.getConnection().setAutoCommit(false);
-                        mySQL4.getConnection().setAutoCommit(false);
+                        database1.getConnection().setAutoCommit(false);
+                        database2.getConnection().setAutoCommit(false);
+                        database3.getConnection().setAutoCommit(false);
+                        database4.getConnection().setAutoCommit(false);
                         int playerId = -1;
                         if (this.myCharz() != null) {
                             playerId = this.myCharz().playerId;
@@ -623,21 +622,21 @@ public class Session_ME implements ISession {
                             strSQL.addSet("pointVip", this.myCharz().pointVip);
                             strSQL.addSet("maxXu", this.myCharz().maxXu);
                             
-                            mySQL2.getConnection().prepareStatement(strSQL.toSQL()).executeUpdate();
+                            database2.getConnection().prepareStatement(strSQL.toSQL()).executeUpdate();
                             //Dua hau
-                            mySQL3.getConnection().prepareStatement(String.format(mResources.UPDATE_DUAHAUS, Util.gI().stringSQL(duahaus.toJSONString()), this.myCharz().playerId)).executeUpdate();
+                            database3.getConnection().prepareStatement(String.format(mResources.UPDATE_DUAHAUS, Util.gI().stringSQL(duahaus.toJSONString()), this.myCharz().playerId)).executeUpdate();
                             //arrItemBag
-                            mySQL3.getConnection().prepareStatement(String.format(mResources.UPDATE_ARRITEMBAGS, this.myCharz().bagcount, Util.gI().stringSQL(arrItemBag.toJSONString()), this.myCharz().playerId)).executeUpdate();
+                            database3.getConnection().prepareStatement(String.format(mResources.UPDATE_ARRITEMBAGS, this.myCharz().bagcount, Util.gI().stringSQL(arrItemBag.toJSONString()), this.myCharz().playerId)).executeUpdate();
                             //arrItemBox
-                            mySQL3.getConnection().prepareStatement(String.format(mResources.UPDATE_ARRITEMBOXS, this.myCharz().boxcount, Util.gI().stringSQL(arrItemBox.toJSONString()), this.myCharz().playerId)).executeUpdate();
+                            database3.getConnection().prepareStatement(String.format(mResources.UPDATE_ARRITEMBOXS, this.myCharz().boxcount, Util.gI().stringSQL(arrItemBox.toJSONString()), this.myCharz().playerId)).executeUpdate();
                             //arrItemMore
-                            mySQL3.getConnection().prepareStatement(String.format(mResources.UPDATE_ARRITEMMORES, Util.gI().stringSQL(arrItemMore.toJSONString()), this.myCharz().playerId)).executeUpdate();
+                            database3.getConnection().prepareStatement(String.format(mResources.UPDATE_ARRITEMMORES, Util.gI().stringSQL(arrItemMore.toJSONString()), this.myCharz().playerId)).executeUpdate();
                             //magicTree
-                            mySQL3.getConnection().prepareStatement(String.format(mResources.UPDATE_MAGICTREES, this.myCharz().magicTree_level, this.myCharz().magicTree_currPeas, this.myCharz().magicTree_miliseconds, this.myCharz().magicTree_isUpdate, this.myCharz().playerId)).executeUpdate();
+                            database3.getConnection().prepareStatement(String.format(mResources.UPDATE_MAGICTREES, this.myCharz().magicTree_level, this.myCharz().magicTree_currPeas, this.myCharz().magicTree_miliseconds, this.myCharz().magicTree_isUpdate, this.myCharz().playerId)).executeUpdate();
                             //arrFriend
-                            mySQL3.getConnection().prepareStatement(String.format(mResources.UPDATE_ARRFRIENDS, Util.gI().stringSQL(arrFriend.toJSONString()), this.myCharz().playerId)).executeUpdate();
+                            database3.getConnection().prepareStatement(String.format(mResources.UPDATE_ARRFRIENDS, Util.gI().stringSQL(arrFriend.toJSONString()), this.myCharz().playerId)).executeUpdate();
                             //arrAmu
-                            mySQL3.getConnection().prepareStatement(String.format(mResources.UPDATE_ARRAMUS, Util.gI().stringSQL(arrAmu.toJSONString()), this.myCharz().playerId)).executeUpdate();
+                            database3.getConnection().prepareStatement(String.format(mResources.UPDATE_ARRAMUS, Util.gI().stringSQL(arrAmu.toJSONString()), this.myCharz().playerId)).executeUpdate();
                             //Petz
                             if (this.myCharz().myPet != null) {
 
@@ -658,7 +657,7 @@ public class Session_ME implements ISession {
                                     }
                                     jarr2.add(jarr3);
                                 }
-                                mySQL3.getConnection().prepareStatement(String.format(
+                                database3.getConnection().prepareStatement(String.format(
                                         mResources.UPDATE_PETZS,
                                         Util.gI().stringSQL(this.myCharz().myPet.cName),
                                         this.myCharz().myPet.headDefault,
@@ -689,7 +688,7 @@ public class Session_ME implements ISession {
                                         this.myCharz().playerId
                                 )).executeUpdate();
                             } else {
-                                mySQL3.getConnection().prepareStatement(String.format(mResources.UPDATE_PETZS2, this.myCharz().playerId)).executeUpdate();
+                                database3.getConnection().prepareStatement(String.format(mResources.UPDATE_PETZS2, this.myCharz().playerId)).executeUpdate();
                             }
                             
                             //WRITE arrTask
@@ -704,7 +703,7 @@ public class Session_ME implements ISession {
                                 arrTask.add(tj);
                             }
                             //arrTask
-                            mySQL3.getConnection().prepareStatement(String.format(mResources.UPDATE_ARRTASKS, Util.gI().stringSQL(arrTask.toJSONString()), this.myCharz().playerId)).executeUpdate();
+                            database3.getConnection().prepareStatement(String.format(mResources.UPDATE_ARRTASKS, Util.gI().stringSQL(arrTask.toJSONString()), this.myCharz().playerId)).executeUpdate();
                             
                             //WRITE textTime
                             JSONArray textTimes = new JSONArray();
@@ -731,7 +730,7 @@ public class Session_ME implements ISession {
                                     textTimes.add(textTime);
                                 }
                             }
-                            mySQL3.getConnection().prepareStatement(String.format(mResources.UPDATE_ARRTEXTTIME, Util.gI().stringSQL(textTimes.toJSONString()), this.myCharz().playerId)).executeUpdate();//WRITE textTime
+                            database3.getConnection().prepareStatement(String.format(mResources.UPDATE_ARRTEXTTIME, Util.gI().stringSQL(textTimes.toJSONString()), this.myCharz().playerId)).executeUpdate();//WRITE textTime
                             //EffChar
                             JSONArray effChar = new JSONArray();
                             for (int i = 0; i < this.myCharz().aEffChar.size(); i++) {
@@ -739,25 +738,25 @@ public class Session_ME implements ISession {
                                     effChar.add((JSONArray) JSONValue.parseWithException(this.myCharz().aEffChar.get(i).toString()));
                                 }
                             }
-                            mySQL4.getConnection().prepareStatement(String.format("UPDATE `effchar` SET `arrEffect` = '%s' WHERE `playerId` = '%d' LIMIT 1", Util.gI().stringSQL(effChar.toJSONString()), this.myCharz().playerId)).executeUpdate();
+                            database4.getConnection().prepareStatement(String.format("UPDATE `effchar` SET `arrEffect` = '%s' WHERE `playerId` = '%d' LIMIT 1", Util.gI().stringSQL(effChar.toJSONString()), this.myCharz().playerId)).executeUpdate();
                         }
-                        mySQL1.getConnection().prepareStatement(String.format(mResources.UPDATE_USER, playerId, this.isLock, this.sc.getInetAddress().getHostAddress(), this.isLoad, this.userId)).executeUpdate();
-                        mySQL1.getConnection().commit();
-                        mySQL2.getConnection().commit();
-                        mySQL3.getConnection().commit();
-                        mySQL4.getConnection().commit();
+                        database1.getConnection().prepareStatement(String.format(mResources.UPDATE_USER, playerId, this.isLock, this.sc.getInetAddress().getHostAddress(), this.isLoad, this.userId)).executeUpdate();
+                        database1.getConnection().commit();
+                        database2.getConnection().commit();
+                        database3.getConnection().commit();
+                        database4.getConnection().commit();
                     } catch (SQLException e) {
-                        mySQL1.getConnection().rollback();
-                        mySQL2.getConnection().rollback();
-                        mySQL3.getConnection().rollback();
-                        mySQL4.getConnection().rollback();
+                        database1.getConnection().rollback();
+                        database2.getConnection().rollback();
+                        database3.getConnection().rollback();
+                        database4.getConnection().rollback();
                         e.printStackTrace();
                     }
                 } finally {
-                    mySQL1.close();
-                    mySQL2.close();
-                    mySQL3.close();
-                    mySQL4.close();
+                    database1.close();
+                    database2.close();
+                    database3.close();
+                    database4.close();
                 }
             } catch (SQLException | ParseException e) {
                 e.printStackTrace();

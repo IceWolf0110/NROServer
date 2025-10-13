@@ -1,6 +1,6 @@
 package dragon.t;
 
-import Models.server.MySQL;
+import Models.server.Database;
 import Models.server.Server;
 
 import java.sql.ResultSet;
@@ -146,21 +146,21 @@ public class LuyenTap {
             }
         }
         try {
-            MySQL mySQL = MySQL.create();
+            Database database = Database.create();
             try {
-                mySQL.getConnection().setAutoCommit(false);
+                database.getConnection().setAutoCommit(false);
                 try {
-                    mySQL.getConnection().prepareStatement("DELETE FROM `luyentap`;").executeUpdate();
+                    database.getConnection().prepareStatement("DELETE FROM `luyentap`;").executeUpdate();
                     for (int i = 0; i < arrList.size(); i++) {
-                        mySQL.getConnection().prepareStatement("INSERT INTO `luyentap` (`id`, `playerId`, `name`, `head`, `body`, `leg`, `level`, `timeFight`, `last`, `gift`) VALUES (NULL, '"+arrList.get(i).playerId+"', '"+arrList.get(i).name+"', '"+arrList.get(i).head+"', '"+arrList.get(i).body+"', '"+arrList.get(i).leg+"', '"+arrList.get(i).level+"', '"+arrList.get(i).timeFight+"', '"+arrList.get(i).last+"', '"+arrList.get(i).gift+"');").executeUpdate();
+                        database.getConnection().prepareStatement("INSERT INTO `luyentap` (`id`, `playerId`, `name`, `head`, `body`, `leg`, `level`, `timeFight`, `last`, `gift`) VALUES (NULL, '"+arrList.get(i).playerId+"', '"+arrList.get(i).name+"', '"+arrList.get(i).head+"', '"+arrList.get(i).body+"', '"+arrList.get(i).leg+"', '"+arrList.get(i).level+"', '"+arrList.get(i).timeFight+"', '"+arrList.get(i).last+"', '"+arrList.get(i).gift+"');").executeUpdate();
                     }
-                    mySQL.getConnection().commit();
+                    database.getConnection().commit();
                 } catch (SQLException e) {
-                    mySQL.getConnection().rollback();
+                    database.getConnection().rollback();
                     e.printStackTrace();
                 }
             } finally {
-                mySQL.close();
+                database.close();
             }
         } catch(SQLException e) {
             e.printStackTrace();
@@ -182,15 +182,15 @@ public class LuyenTap {
         lastWeek = System.currentTimeMillis();
         clear();
         try {
-            MySQL mySQL = MySQL.create();
+            Database database = Database.create();
             try {
-                ResultSet red = mySQL.getConnection().prepareStatement("SELECT * FROM `luyentap`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                ResultSet red = database.getConnection().prepareStatement("SELECT * FROM `luyentap`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 while(red.next()) {
                     LuyenTap o = new LuyenTap(red);
                     LuyenTap.add(o);
                 }
             } finally {
-                mySQL.close();
+                database.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();

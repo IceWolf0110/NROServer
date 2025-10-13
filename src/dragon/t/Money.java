@@ -1,7 +1,7 @@
 package dragon.t;
 
 import Models.server.Dragon;
-import Models.server.MySQL;
+import Models.server.Database;
 import Models.server.mResources;
 
 import java.sql.ResultSet;
@@ -33,13 +33,13 @@ public class Money {
     
     public long getMoney(Char charz) {
         try {
-            MySQL mySQL = MySQL.create();
+            Database database = Database.create();
             try {
-                ResultSet red = mySQL.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_USER_MONEY, charz.session.userId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                ResultSet red = database.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_USER_MONEY, charz.session.userId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 red.first();
                 return red.getLong(1);
             } finally {
-                mySQL.close();
+                database.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -55,16 +55,16 @@ public class Money {
                     int max = arrMoneyNgoc[select][0];
                     int min = arrMoneyNgoc[select][1];
                     try {
-                        MySQL mySQL = MySQL.create();
+                        Database database = Database.create();
                         try {
-                            ResultSet red = mySQL.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_USER_MONEY, charz.session.userId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                            ResultSet red = database.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_USER_MONEY, charz.session.userId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                             red.first();
                             if (max > red.getLong(1)) {
                                 charz.session.service.startOKDlg(String.format(mResources.MONEY_NOT, Util.gI().getFormatNumber(max - red.getLong(1))));
                             } else {
-                                mySQL.getConnection().setAutoCommit(false);
+                                database.getConnection().setAutoCommit(false);
                                 try {
-                                    mySQL.getConnection().prepareStatement(String.format(mResources.UPDATE_USER_MONEY, -max, charz.session.userId)).executeUpdate();
+                                    database.getConnection().prepareStatement(String.format(mResources.UPDATE_USER_MONEY, -max, charz.session.userId)).executeUpdate();
                                     if (Models.server.Dragon.isEvent_NHS) {
                                         if (max >= 10000) {
                                             Item it3e4 = null;
@@ -116,7 +116,7 @@ public class Money {
                                         }
                                     }
                                     charz.updateLuong((min * this.xNgoc), 2);
-                                    mySQL.getConnection().commit();
+                                    database.getConnection().commit();
                                     charz.session.isSave = true;
                                     if (max >= 10000) {
                                         int tichluy = max / 1000;
@@ -149,12 +149,12 @@ public class Money {
                                     //Nhiem vu danh hieu
                                     charz.addTaskPointDH(1289, max);
                                 } catch (SQLException e) {
-                                    mySQL.getConnection().rollback();
+                                    database.getConnection().rollback();
                                     e.printStackTrace();
                                 }
                             }
                         } finally {
-                            mySQL.close();
+                            database.close();
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -168,16 +168,16 @@ public class Money {
                     int max2 = arrMoneyGold[select][0];
                     int min2 = arrMoneyGold[select][1];
                     try {
-                        MySQL mySQL2 = MySQL.create();
+                        Database database2 = Database.create();
                         try {
-                            ResultSet red2 = mySQL2.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_USER_MONEY, charz.session.userId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                            ResultSet red2 = database2.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_USER_MONEY, charz.session.userId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                             red2.first();
                             if (max2 > red2.getLong(1)) {
                                 charz.session.service.startOKDlg(String.format(mResources.MONEY_NOT, Util.gI().getFormatNumber(max2 - red2.getLong(1))));
                             } else {
-                                mySQL2.getConnection().setAutoCommit(false);
+                                database2.getConnection().setAutoCommit(false);
                                 try {
-                                    mySQL2.getConnection().prepareStatement(String.format(mResources.UPDATE_USER_MONEY, -max2, charz.session.userId)).executeUpdate();
+                                    database2.getConnection().prepareStatement(String.format(mResources.UPDATE_USER_MONEY, -max2, charz.session.userId)).executeUpdate();
                                     //Su kien halloween
                                     if (Models.server.Dragon.isEvent_Halloween) {
                                         if (max2 >= 100000) {
@@ -206,7 +206,7 @@ public class Money {
                                     }     
                                     charz.totalGold = charz.totalGold + (min2 * this.xVang);
                                     charz.session.service.chatTHEGIOI(mResources.EMPTY, String.format(mResources.TOTAL_GOLD, Util.gI().getFormatNumber(charz.totalGold)), null, 0);
-                                    mySQL2.getConnection().commit();
+                                    database2.getConnection().commit();
                                     charz.session.isSave = true;
                                     if (max2 >= 10000) {
                                         int tichluy2 = max2 / 1000;
@@ -239,12 +239,12 @@ public class Money {
                                     //Nhiem vu danh hieu
                                     charz.addTaskPointDH(1289, max2);
                                 } catch (SQLException e) {
-                                    mySQL2.getConnection().rollback();
+                                    database2.getConnection().rollback();
                                     e.printStackTrace();
                                 }
                             }
                         } finally {
-                            mySQL2.close();
+                            database2.close();
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -257,18 +257,18 @@ public class Money {
     
     public void updateMoeny(Char charz, long x) {
         try {
-            MySQL mySQL = MySQL.create();
+            Database database = Database.create();
             try {
-                mySQL.getConnection().setAutoCommit(false);
+                database.getConnection().setAutoCommit(false);
                 try {
-                    mySQL.getConnection().prepareStatement(String.format(mResources.UPDATE_USER_MONEY, x, charz.session.userId)).executeUpdate();
-                    mySQL.getConnection().commit();
+                    database.getConnection().prepareStatement(String.format(mResources.UPDATE_USER_MONEY, x, charz.session.userId)).executeUpdate();
+                    database.getConnection().commit();
                 } catch (SQLException e){
-                    mySQL.getConnection().rollback();
+                    database.getConnection().rollback();
                     e.printStackTrace();
                 }
             } finally {
-                mySQL.close();
+                database.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();

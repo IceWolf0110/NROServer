@@ -1,6 +1,6 @@
 package dragon.t;
 
-import Models.server.MySQL;
+import Models.server.Database;
 import Models.server.Server;
 import Models.server.Session_ME;
 import Models.server.mResources;
@@ -422,28 +422,28 @@ public class ItemKyGui {
             }
         }
         try {
-            MySQL mySQL = MySQL.create();
+            Database database = Database.create();
             try {
-                mySQL.getConnection().setAutoCommit(false);
+                database.getConnection().setAutoCommit(false);
                 try {
                     //Xoa all data cu
-                    mySQL.getConnection().prepareStatement(mResources.DELETE_ARRKYGUI).executeUpdate();
+                    database.getConnection().prepareStatement(mResources.DELETE_ARRKYGUI).executeUpdate();
                     //insert data moi
                     for (int i = 0; i < list.size(); i++) {
-                        mySQL.getConnection().prepareStatement(String.format(
+                        database.getConnection().prepareStatement(String.format(
                                 mResources.INSERT_ARRKYGUI,
                                 list.get(i).playerId,
                                 list.get(i).item.toString(),
                                 list.get(i).last
                         )).executeUpdate();
                     }
-                    mySQL.getConnection().commit();
+                    database.getConnection().commit();
                 } catch (SQLException e) {
-                    mySQL.getConnection().rollback();
+                    database.getConnection().rollback();
                     e.printStackTrace();
                 }
             } finally {
-                mySQL.close();
+                database.close();
             }
         } catch(SQLException e) {
             e.printStackTrace();

@@ -1084,12 +1084,12 @@ public class Controller implements IMessageHandler {
                             this.session.service.startOKDlg(mResources.KY_TU_DAC_BIET);
                         } else {
                             try {
-                                MySQL mySQL1 = MySQL.create();
-                                MySQL mySQL2 = MySQL.create();
-                                MySQL mySQL3 = MySQL.create();
-                                MySQL mySQL4 = MySQL.create();
+                                Database database1 = Database.create();
+                                Database database2 = Database.create();
+                                Database database3 = Database.create();
+                                Database database4 = Database.create();
                                 try {
-                                    ResultSet red1 = mySQL1.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_USER_FORMAT, Util.gI().stringSQL_LIKE(Util.gI().stringSQL(uname)), Util.gI().stringSQL_LIKE(Util.gI().stringSQL(pass))), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                                    ResultSet red1 = database1.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_USER_FORMAT, Util.gI().stringSQL_LIKE(Util.gI().stringSQL(uname)), Util.gI().stringSQL_LIKE(Util.gI().stringSQL(pass))), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                                     if (red1.first()) {
                                         //GET USER
                                         int uId = red1.getInt("id");
@@ -1129,7 +1129,7 @@ public class Controller implements IMessageHandler {
                                                     newChar.charID = Char.getNewCharID();
                                                     newChar.playerId = playerId;
                                                     {
-                                                        ResultSet red2 = mySQL2.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_CHARS_FORMAT, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                                                        ResultSet red2 = database2.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_CHARS_FORMAT, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                                                         red2.first();
                                                         newChar.cName = red2.getString("cName");
                                                         newChar.cgender = red2.getByte("cgender");
@@ -1257,7 +1257,7 @@ public class Controller implements IMessageHandler {
 
                                                     //Vat pham no ra\\
                                                     {
-                                                        ResultSet red3 = mySQL3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_DUAHAUS_FORMAT, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                                                        ResultSet red3 = database3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_DUAHAUS_FORMAT, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                                                         red3.first();
                                                         JSONArray duahaus = (JSONArray) JSONValue.parseWithException(red3.getString(2));
                                                         for (int i = 0; i < duahaus.size(); i++) {
@@ -1281,7 +1281,7 @@ public class Controller implements IMessageHandler {
                                                     //Hanh trang
 
                                                     {
-                                                        ResultSet red4 = mySQL3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_ARRITEMBAGS, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                                                        ResultSet red4 = database3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_ARRITEMBAGS, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                                                         red4.first();
                                                         newChar.arrItemBag = new Item[newChar.bagcount = red4.getByte(1)];
                                                         JSONArray arrItemBag = (JSONArray) JSONValue.parseWithException(red4.getString(2));
@@ -1298,7 +1298,7 @@ public class Controller implements IMessageHandler {
                                                     //Ruong 
 
                                                     {
-                                                        ResultSet red5 = mySQL3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_ARRITEMBOXS, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                                                        ResultSet red5 = database3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_ARRITEMBOXS, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                                                         red5.first();
                                                         newChar.arrItemBox = new Item[newChar.boxcount = red5.getByte(1)];
                                                         JSONArray arrItemBox = (JSONArray) JSONValue.parseWithException(red5.getString(2));
@@ -1314,7 +1314,7 @@ public class Controller implements IMessageHandler {
                                                     //Ruong phu
 
                                                     {
-                                                        ResultSet red8 = mySQL3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_ARRITEMMORES, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                                                        ResultSet red8 = database3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_ARRITEMMORES, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                                                         red8.first();
                                                         JSONArray arrItemMore = (JSONArray) JSONValue.parseWithException(red8.getString(1));
                                                         for (int i = 0; i < arrItemMore.size(); i++) {
@@ -1333,7 +1333,7 @@ public class Controller implements IMessageHandler {
                                                     //Cay dau than
 
                                                     {
-                                                        ResultSet red7 = mySQL3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_MAGICTREES, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                                                        ResultSet red7 = database3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_MAGICTREES, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                                                         red7.first();
                                                         newChar.magicTree_level = red7.getByte(1);
                                                         newChar.magicTree_currPeas = red7.getShort(2);
@@ -1344,7 +1344,7 @@ public class Controller implements IMessageHandler {
                                                     //Ban be
 
                                                     {
-                                                        ResultSet red9 = mySQL3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_ARRFRIENDS, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                                                        ResultSet red9 = database3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_ARRFRIENDS, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                                                         red9.first();
                                                         JSONArray arrFriend = (JSONArray) JSONValue.parseWithException(red9.getString(1));
                                                         for (int i = 0; i < arrFriend.size(); i++) {
@@ -1365,7 +1365,7 @@ public class Controller implements IMessageHandler {
                                                     //Bua chu
 
                                                     {
-                                                        ResultSet red10 = mySQL3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_ARRAMUS, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                                                        ResultSet red10 = database3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_ARRAMUS, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                                                         red10.first();
                                                         JSONArray arrAmu = (JSONArray) JSONValue.parseWithException(red10.getString(1));
                                                         for (int i = 0; i < arrAmu.size(); i++) {
@@ -1377,7 +1377,7 @@ public class Controller implements IMessageHandler {
                                                     //De tu
 
                                                     {
-                                                        ResultSet red5 = mySQL3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_PETZS_FORMAT, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                                                        ResultSet red5 = database3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_PETZS_FORMAT, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                                                         red5.first();
                                                         //De tu || Pet
                                                         if (red5.getBoolean(2)) {
@@ -1451,7 +1451,7 @@ public class Controller implements IMessageHandler {
                                                     //Nhiem vu\\
 
                                                     {
-                                                        ResultSet red6 = mySQL3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_ARRTASKS_FORMAT, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                                                        ResultSet red6 = database3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_ARRTASKS_FORMAT, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                                                         red6.first();
                                                         JSONArray arrTask = (JSONArray) JSONValue.parseWithException(red6.getString(1));
                                                         for (int i = 0; i < arrTask.size(); i++) {
@@ -1469,7 +1469,7 @@ public class Controller implements IMessageHandler {
 
                                                     {
 
-                                                        ResultSet red12 = mySQL3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_ARRTEXTTIME, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                                                        ResultSet red12 = database3.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_ARRTEXTTIME, playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                                                         red12.first();
                                                         JSONArray textTimes = (JSONArray) JSONValue.parseWithException(red12.getString(1));
                                                         for (int i = 0; i < textTimes.size(); i++) {
@@ -1491,7 +1491,7 @@ public class Controller implements IMessageHandler {
 
                                                     {
 
-                                                        ResultSet res = mySQL4.getConnection().prepareStatement(String.format("SELECT `arrEffect` FROM `effchar` WHERE `playerId` = '%d' LIMIT 1;", playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                                                        ResultSet res = database4.getConnection().prepareStatement(String.format("SELECT `arrEffect` FROM `effchar` WHERE `playerId` = '%d' LIMIT 1;", playerId), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                                                         res.first();
                                                         JSONArray effChar = (JSONArray) JSONValue.parseWithException(res.getString(1));
                                                         for (int i = 0; i < effChar.size(); i++) {
@@ -1516,10 +1516,10 @@ public class Controller implements IMessageHandler {
                                         this.session.service.startOKDlg(mResources.LOGIN_USER_PASS);
                                     }
                                 } finally {
-                                    mySQL1.close();
-                                    mySQL2.close();
-                                    mySQL3.close();
-                                    mySQL4.close();
+                                    database1.close();
+                                    database2.close();
+                                    database3.close();
+                                    database4.close();
                                 }
                             } catch (SQLException | ParseException e) {
                                 e.printStackTrace();
@@ -1588,9 +1588,9 @@ public class Controller implements IMessageHandler {
                             this.session.service.startOKDlg(mResources.CREATE_PLAYER_FAILD1);
                         } else {
                             try {
-                                MySQL mySQL1 = MySQL.create();
-                                MySQL mySQL2 = MySQL.create();
-                                MySQL mySQL3 = MySQL.create();
+                                Database database1 = Database.create();
+                                Database database2 = Database.create();
+                                Database database3 = Database.create();
                                 try {
                                     if (Server.gI().isHavecName(name)) {
                                         this.session.service.startOKDlg(mResources.CRETAE_CHAR_HAD);
@@ -1663,9 +1663,9 @@ public class Controller implements IMessageHandler {
                                             }
                                         }
                                         if (nClassId != -1) {
-                                            mySQL1.getConnection().setAutoCommit(false);
-                                            mySQL2.getConnection().setAutoCommit(false);
-                                            mySQL3.getConnection().setAutoCommit(false);
+                                            database1.getConnection().setAutoCommit(false);
+                                            database2.getConnection().setAutoCommit(false);
+                                            database3.getConnection().setAutoCommit(false);
                                             try {
                                                 //Insert options
                                                 SetSQL strSQL = new SetSQL("INSERT INTO `options` SET %;");
@@ -1695,32 +1695,32 @@ public class Controller implements IMessageHandler {
                                                 strSQL.addSet("cMaxStamina", 10000);
                                                 strSQL.addSet("items", "[]");
                                                 strSQL.addSet("lastTime", last);
-                                                PreparedStatement p = mySQL1.getConnection().prepareStatement(strSQL.toSQL(), Statement.RETURN_GENERATED_KEYS);
+                                                PreparedStatement p = database1.getConnection().prepareStatement(strSQL.toSQL(), Statement.RETURN_GENERATED_KEYS);
                                                 p.executeUpdate();
                                                 ResultSet red = p.getGeneratedKeys();
                                                 red.first();
                                                 //Insert DuaHau
-                                                mySQL2.getConnection().prepareStatement(String.format(mResources.INSERT_DUAHAUS, red.getInt(1))).executeUpdate();
+                                                database2.getConnection().prepareStatement(String.format(mResources.INSERT_DUAHAUS, red.getInt(1))).executeUpdate();
                                                 //Insert arrItemBag
-                                                mySQL2.getConnection().prepareStatement(String.format(mResources.INSERT_ARRITEMBAGS, red.getInt(1))).executeUpdate();
+                                                database2.getConnection().prepareStatement(String.format(mResources.INSERT_ARRITEMBAGS, red.getInt(1))).executeUpdate();
                                                 //Insert arrItemBox
-                                                mySQL2.getConnection().prepareStatement(String.format(mResources.INSERT_ARRITEMBOXS, red.getInt(1))).executeUpdate();
+                                                database2.getConnection().prepareStatement(String.format(mResources.INSERT_ARRITEMBOXS, red.getInt(1))).executeUpdate();
                                                 //Insert arrItemMore
-                                                mySQL2.getConnection().prepareStatement(String.format(mResources.INSERT_ARRITEMMORES, red.getInt(1))).executeUpdate();
+                                                database2.getConnection().prepareStatement(String.format(mResources.INSERT_ARRITEMMORES, red.getInt(1))).executeUpdate();
                                                 //Insert magicTree
-                                                mySQL2.getConnection().prepareStatement(String.format(mResources.INSERT_MAGICTREES, red.getInt(1))).executeUpdate();
+                                                database2.getConnection().prepareStatement(String.format(mResources.INSERT_MAGICTREES, red.getInt(1))).executeUpdate();
                                                 //Insert arrFriend
-                                                mySQL2.getConnection().prepareStatement(String.format(mResources.INSERT_ARRFRIENDS, red.getInt(1))).executeUpdate();
+                                                database2.getConnection().prepareStatement(String.format(mResources.INSERT_ARRFRIENDS, red.getInt(1))).executeUpdate();
                                                 //Insert arrItemBody2
-                                                mySQL2.getConnection().prepareStatement(String.format(mResources.INSERT_ARRAMUS, red.getInt(1))).executeUpdate();
+                                                database2.getConnection().prepareStatement(String.format(mResources.INSERT_ARRAMUS, red.getInt(1))).executeUpdate();
                                                 //Insert petz
-                                                mySQL2.getConnection().prepareStatement(String.format(mResources.INSERT_PETZS, red.getInt(1))).executeUpdate();
+                                                database2.getConnection().prepareStatement(String.format(mResources.INSERT_PETZS, red.getInt(1))).executeUpdate();
                                                 //Insert arrTask
-                                                mySQL2.getConnection().prepareStatement(String.format(mResources.INSERT_ARRTASKS, red.getInt(1))).executeUpdate();
+                                                database2.getConnection().prepareStatement(String.format(mResources.INSERT_ARRTASKS, red.getInt(1))).executeUpdate();
                                                 //Insert arrTextTime
-                                                mySQL2.getConnection().prepareStatement(String.format(mResources.INSERT_ARRTEXTTIME, red.getInt(1))).executeUpdate();
+                                                database2.getConnection().prepareStatement(String.format(mResources.INSERT_ARRTEXTTIME, red.getInt(1))).executeUpdate();
                                                 //Insert EffChar
-                                                mySQL3.getConnection().prepareStatement(String.format("INSERT INTO `effchar` (`playerId`, `arrEffect`) VALUES ('%d', '[]');", red.getInt(1)), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeUpdate();
+                                                database3.getConnection().prepareStatement(String.format("INSERT INTO `effchar` (`playerId`, `arrEffect`) VALUES ('%d', '[]');", red.getInt(1)), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeUpdate();
                                                 red.first();
                                                 {
                                                     Char newChar = new Char();
@@ -1790,9 +1790,9 @@ public class Controller implements IMessageHandler {
                                                     newChar.myObj().petition = true;
                                                     this.session.myChar = newChar;
                                                     Server.gI().addConn(this.session, newChar.charID, newChar.cName, newChar.playerId);
-                                                    mySQL1.getConnection().commit();
-                                                    mySQL2.getConnection().commit();
-                                                    mySQL3.getConnection().commit();
+                                                    database1.getConnection().commit();
+                                                    database2.getConnection().commit();
+                                                    database3.getConnection().commit();
                                                     //Qua tan thu
                                                     //newChar.giftTanThu();
                                                     //BACKUP
@@ -1801,17 +1801,17 @@ public class Controller implements IMessageHandler {
                                                     this.session.myCharz().giftTanThu();
                                                 }
                                             } catch (SQLException e) {
-                                                mySQL1.getConnection().rollback();
-                                                mySQL2.getConnection().rollback();
-                                                mySQL3.getConnection().rollback();
+                                                database1.getConnection().rollback();
+                                                database2.getConnection().rollback();
+                                                database3.getConnection().rollback();
                                                 e.printStackTrace();
                                             }
                                         }
                                     }
                                 } finally {
-                                    mySQL1.close();
-                                    mySQL2.close();
-                                    mySQL3.close();
+                                    database1.close();
+                                    database2.close();
+                                    database3.close();
                                 }
                             } catch (SQLException e) {
                                 e.printStackTrace();

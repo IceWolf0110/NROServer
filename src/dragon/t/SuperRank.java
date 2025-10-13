@@ -1,12 +1,11 @@
 package dragon.t;
 
-import Models.server.MySQL;
+import Models.server.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
@@ -116,16 +115,16 @@ public class SuperRank {
     
     public static void init() {
         try {
-            MySQL mySQL = MySQL.create();
+            Database database = Database.create();
             try {
-                ResultSet red = mySQL.getConnection().prepareStatement("SELECT * FROM `superrank`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                ResultSet red = database.getConnection().prepareStatement("SELECT * FROM `superrank`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 while(red.next()) {
                     SuperRank superRank = new SuperRank();
                     superRank.initRank(red);
                     SuperRank.add(superRank);
                 }
             } finally {
-                mySQL.close();
+                database.close();
             }
         } catch (SQLException | ParseException e) {
             e.printStackTrace();
@@ -141,25 +140,25 @@ public class SuperRank {
             }
         }
         try {
-            MySQL mySQL = MySQL.create();
+            Database database = Database.create();
             try {
-                mySQL.getConnection().setAutoCommit(false);
+                database.getConnection().setAutoCommit(false);
                 try {
-                    mySQL.getConnection().prepareStatement("DELETE FROM `superrank`;").executeUpdate();
+                    database.getConnection().prepareStatement("DELETE FROM `superrank`;").executeUpdate();
                     for (int i = 0; i < arrList.size(); i++) {
                         JSONArray jarr = new JSONArray();
                         for (int j = 0; j < arrList.get(i).skills.size(); j++) {
                             jarr.add(arrList.get(i).skills.get(j).skillId);
                         }
-                        mySQL.getConnection().prepareStatement("INSERT INTO `superrank`(`playerId`, `cName`, `charID`, `rank`, `cgender`, `cPower`, `headID`, `bodyID`, `legID`, `bag`, `headICON`, `cHPfull`, `cMPfull`, `cDamfull`, `cDeffull`, `cCriticalfull`, `cDefPercentfull`, `cMissPercentfull`, `suckHPGoc`, `suckKIGoc`, `skills`, `ngoc`) VALUES ("+ arrList.get(i).playerId+", \""+ arrList.get(i).name +"\", "+ arrList.get(i).charID +" , "+ arrList.get(i).rank +", "+ arrList.get(i).cgender +", "+ arrList.get(i).cPower +", "+ arrList.get(i).headID +", "+ arrList.get(i).bodyID +", "+ arrList.get(i).legID +", "+ arrList.get(i).bag +", "+ arrList.get(i).headICON +", "+ arrList.get(i).cHPfull +", "+ arrList.get(i).cMPfull +", "+ arrList.get(i).cDamfull +", "+ arrList.get(i).cDeffull +", "+ arrList.get(i).cCriticalfull +", "+ arrList.get(i).cDefPercentfull +", "+ arrList.get(i).cMissPercentfull +", "+ arrList.get(i).suckHPGoc +", "+ arrList.get(i).suckKIGoc +", \""+ jarr +"\", "+arrList.get(i).ngocNhan+")").executeUpdate();
+                        database.getConnection().prepareStatement("INSERT INTO `superrank`(`playerId`, `cName`, `charID`, `rank`, `cgender`, `cPower`, `headID`, `bodyID`, `legID`, `bag`, `headICON`, `cHPfull`, `cMPfull`, `cDamfull`, `cDeffull`, `cCriticalfull`, `cDefPercentfull`, `cMissPercentfull`, `suckHPGoc`, `suckKIGoc`, `skills`, `ngoc`) VALUES ("+ arrList.get(i).playerId+", \""+ arrList.get(i).name +"\", "+ arrList.get(i).charID +" , "+ arrList.get(i).rank +", "+ arrList.get(i).cgender +", "+ arrList.get(i).cPower +", "+ arrList.get(i).headID +", "+ arrList.get(i).bodyID +", "+ arrList.get(i).legID +", "+ arrList.get(i).bag +", "+ arrList.get(i).headICON +", "+ arrList.get(i).cHPfull +", "+ arrList.get(i).cMPfull +", "+ arrList.get(i).cDamfull +", "+ arrList.get(i).cDeffull +", "+ arrList.get(i).cCriticalfull +", "+ arrList.get(i).cDefPercentfull +", "+ arrList.get(i).cMissPercentfull +", "+ arrList.get(i).suckHPGoc +", "+ arrList.get(i).suckKIGoc +", \""+ jarr +"\", "+arrList.get(i).ngocNhan+")").executeUpdate();
                     }
-                    mySQL.getConnection().commit();
+                    database.getConnection().commit();
                 } catch (SQLException e) {
-                    mySQL.getConnection().rollback();
+                    database.getConnection().rollback();
                     e.printStackTrace();
                 }
             } finally {
-                mySQL.close();
+                database.close();
             }
         } catch(SQLException e) {
             e.printStackTrace();

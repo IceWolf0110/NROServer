@@ -1,6 +1,6 @@
 package dragon.t;
 
-import Models.server.MySQL;
+import Models.server.Database;
 import Models.server.mResources;
 
 import java.sql.ResultSet;
@@ -27,11 +27,11 @@ public class GiftCode {
     public synchronized void inputCode(Char charz, String code) {
         try {
             if (!code.isEmpty()) {
-                MySQL mySQL = MySQL.create();
+                Database database = Database.create();
                 try {
-                    mySQL.getConnection().setAutoCommit(false);
+                    database.getConnection().setAutoCommit(false);
                     try {
-                        ResultSet red = mySQL.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_GIFTCODE_FORMAT, Util.gI().stringSQL_LIKE(Util.gI().stringSQL(code))), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                        ResultSet red = database.getConnection().prepareStatement(String.format(mResources.QUERY_SELECT_GIFTCODE_FORMAT, Util.gI().stringSQL_LIKE(Util.gI().stringSQL(code))), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                         if (red.first()) {
                             //get value
                             JSONArray items = (JSONArray) JSONValue.parseWithException(red.getString(2));
@@ -55,7 +55,7 @@ public class GiftCode {
                                 charz.session.service.startOKDlg(mResources.GIFT_CODE_NHAN7);
                             } else {
                                 users.add(charz.session.userName);
-                                mySQL.getConnection().prepareStatement(String.format(mResources.UPDATE_GIFTCODE, Util.gI().stringSQL(users.toJSONString()), Util.gI().stringSQL_LIKE(code))).executeUpdate();
+                                database.getConnection().prepareStatement(String.format(mResources.UPDATE_GIFTCODE, Util.gI().stringSQL(users.toJSONString()), Util.gI().stringSQL_LIKE(code))).executeUpdate();
                                 //add item to bag
                                 String giftStr = new String();
                                 for (int i = 0; i < items.size(); i++) {
@@ -112,13 +112,13 @@ public class GiftCode {
                         } else {
                             charz.session.service.startOKDlg(mResources.GIFT_CODE_NHAN3);
                         }
-                        mySQL.getConnection().commit();
+                        database.getConnection().commit();
                     } catch (SQLException e) {
-                        mySQL.getConnection().rollback();
+                        database.getConnection().rollback();
                         e.printStackTrace();
                     }
                 } finally {
-                    mySQL.close();
+                    database.close();
                 }
             }
         } catch (SQLException | ParseException e) {

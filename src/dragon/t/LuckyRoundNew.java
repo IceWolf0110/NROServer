@@ -1,6 +1,6 @@
 package dragon.t;
 
-import Models.server.MySQL;
+import Models.server.Database;
 import Models.server.mResources;
 
 import java.sql.ResultSet;
@@ -261,16 +261,16 @@ public class LuckyRoundNew {
     
     public static void init() {
         try {
-            MySQL mySQL = MySQL.create();
+            Database database = Database.create();
             try {
-                ResultSet red = mySQL.getConnection().prepareStatement("SELECT * FROM `listwin`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                ResultSet red = database.getConnection().prepareStatement("SELECT * FROM `listwin`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 while(red.next()) {
                     Money money = new Money();
                     money.initWin(red);
                     LuckyRoundNew.addWin(money);
                 }
             } finally {
-                mySQL.close();
+                database.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -292,21 +292,21 @@ public class LuckyRoundNew {
             }
         }
         try {
-            MySQL mySQL = MySQL.create();
+            Database database = Database.create();
             try {
-                mySQL.getConnection().setAutoCommit(false);
+                database.getConnection().setAutoCommit(false);
                 try {
-                    mySQL.getConnection().prepareStatement("DELETE FROM `listwin`;").executeUpdate();
+                    database.getConnection().prepareStatement("DELETE FROM `listwin`;").executeUpdate();
                     for (int i = 0; i < arrList.size(); i++) {
-                        mySQL.getConnection().prepareStatement("INSERT INTO `listwin`(`playerId`, `name`, `min`, `max`, `win`) VALUES ("+ arrList.get(i).playerId+", \""+ arrList.get(i).name +"\", "+ arrList.get(i).min +" , "+ arrList.get(i).max +", "+ arrList.get(i).win +")").executeUpdate();
+                        database.getConnection().prepareStatement("INSERT INTO `listwin`(`playerId`, `name`, `min`, `max`, `win`) VALUES ("+ arrList.get(i).playerId+", \""+ arrList.get(i).name +"\", "+ arrList.get(i).min +" , "+ arrList.get(i).max +", "+ arrList.get(i).win +")").executeUpdate();
                     }
-                    mySQL.getConnection().commit();
+                    database.getConnection().commit();
                 } catch (SQLException e) {
-                    mySQL.getConnection().rollback();
+                    database.getConnection().rollback();
                     e.printStackTrace();
                 }
             } finally {
-                mySQL.close();
+                database.close();
             }
         } catch(SQLException e) {
             e.printStackTrace();

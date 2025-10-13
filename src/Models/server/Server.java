@@ -1258,12 +1258,12 @@ public class Server extends Thread {
     
     public static void init() {
         try {
-            MySQL mySQL1 = MySQL.create();
-            MySQL mySQL2 = MySQL.create();
+            Database database1 = Database.create();
+            Database database2 = Database.create();
             try {
                 //____________LOAD RANK________________//
                 System.out.println("Load Rank");
-                ResultSet res = mySQL1.getConnection().prepareStatement("SELECT * FROM `rank`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                ResultSet res = database1.getConnection().prepareStatement("SELECT * FROM `rank`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 while(res.next()) {
                     Rank r = new Rank();
                     r.initRank(res);
@@ -1272,7 +1272,7 @@ public class Server extends Thread {
                 //THE END
                 //____________LOAD CLAN________________//
                 System.out.println("Load Clan");
-                res = mySQL1.getConnection().prepareStatement("SELECT * FROM `clan`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database1.getConnection().prepareStatement("SELECT * FROM `clan`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 while(res.next()) {
                     Clan c = new Clan();
                     c.initClan(res);
@@ -1281,7 +1281,7 @@ public class Server extends Thread {
                 //THE END
                 //____________LOAD NAME PLAYER________________//
                 System.out.println("Load cName Player");
-                res = mySQL2.getConnection().prepareStatement("SELECT `cName` FROM `options`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database2.getConnection().prepareStatement("SELECT `cName` FROM `options`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 while(res.next()) {
                     Server.gI().addcName(res.getString(1));
                 }
@@ -1289,7 +1289,7 @@ public class Server extends Thread {
                 //THE END
                 //____________LOAD KyGui________________//
                 System.out.println("Load Kygui");
-                res = mySQL1.getConnection().prepareStatement("SELECT * FROM `arrkygui`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database1.getConnection().prepareStatement("SELECT * FROM `arrkygui`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 while(res.next()) {
                     ItemKyGui kygui = new ItemKyGui(res);
                     ItemKyGui.add(kygui);
@@ -1297,8 +1297,8 @@ public class Server extends Thread {
                 res.close();
                 //THE END
             } finally {
-                mySQL1.close();
-                mySQL2.close();
+                database1.close();
+                database2.close();
             }
         } catch (SQLException | ParseException e) {
             e.printStackTrace();

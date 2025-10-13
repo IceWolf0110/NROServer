@@ -1,6 +1,6 @@
 package dragon.t;
 
-import Models.server.MySQL;
+import Models.server.Database;
 import Models.server.Server;
 import Models.server.Session_ME;
 import Models.server.mResources;
@@ -251,18 +251,18 @@ public class LuckyNumber extends Thread {
                         player.myCharz().updateLuongKhoa(money / this.arrWinId.size(), 2);
                     } else {
                         try {
-                            MySQL mySQL = MySQL.create();
+                            Database database = Database.create();
                             try {
-                                mySQL.getConnection().setAutoCommit(false);
+                                database.getConnection().setAutoCommit(false);
                                 try {
-                                    mySQL.getConnection().prepareStatement(String.format(mResources.UPDATE_LUONGKHOA, money / this.arrWinId.size(), this.arrWinId.get(i))).executeUpdate();
-                                    mySQL.getConnection().commit();
+                                    database.getConnection().prepareStatement(String.format(mResources.UPDATE_LUONGKHOA, money / this.arrWinId.size(), this.arrWinId.get(i))).executeUpdate();
+                                    database.getConnection().commit();
                                 } catch  (SQLException e){
-                                    mySQL.getConnection().rollback();
+                                    database.getConnection().rollback();
                                     e.printStackTrace();
                                 }
                             } finally {
-                                mySQL.close();
+                                database.close();
                             }
                         } catch (SQLException e) {
                             e.printStackTrace();

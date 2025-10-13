@@ -1,6 +1,6 @@
 package dragon.t;
 
-import Models.server.MySQL;
+import Models.server.Database;
 import Models.server.mResources;
 
 import java.sql.ResultSet;
@@ -224,7 +224,7 @@ public class Rank {
             }
         }
         try {
-            MySQL mySQL = MySQL.create();
+            Database database = Database.create();
             JSONArray jtops = new JSONArray();
             for (int i = 0; i < array.length; i++) {
                 JSONArray jtop = new JSONArray();
@@ -240,20 +240,20 @@ public class Rank {
                 jtops.add(jtop);
             }
             try {
-                mySQL.getConnection().setAutoCommit(false);
+                database.getConnection().setAutoCommit(false);
                 try {
-                    mySQL.getConnection().prepareStatement(String.format(
+                    database.getConnection().prepareStatement(String.format(
                             mResources.UPDATE_RANK,
                             Util.gI().stringSQL(jtops.toJSONString()),
                             this.rankId
                     )).executeUpdate();
-                    mySQL.getConnection().commit();
+                    database.getConnection().commit();
                 } catch (SQLException e) {
-                    mySQL.getConnection().rollback();
+                    database.getConnection().rollback();
                     e.printStackTrace();
                 }
             } finally {
-                mySQL.close();
+                database.close();
             }
         } catch(SQLException e) {
             e.printStackTrace();

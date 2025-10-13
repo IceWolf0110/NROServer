@@ -1,6 +1,6 @@
 package dragon.t;
 
-import Models.server.MySQL;
+import Models.server.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,14 +31,14 @@ public class GameData {
     public static void init() {
         int n = -1;
         try {
-            MySQL mySQL = MySQL.create();
+            Database database = Database.create();
             try {
                 ResultSet res;
-                mySQL.getConnection().prepareStatement("SET GLOBAL max_connections = 10000000000;").executeUpdate();
+                database.getConnection().prepareStatement("SET GLOBAL max_connections = 10000000000;").executeUpdate();
 
                 //-------------Load Exp-----------------//
                 System.out.println("Load exps");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `exps`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `exps`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     exps = new long[res.getRow()];
                     res.beforeFirst();
@@ -53,7 +53,7 @@ public class GameData {
 
                 //____________LOAD MAP TEMPLATE________________//
                 System.out.println("Load mapTemplate");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `maptemplate`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `maptemplate`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     ZoneMap.mapNames = new String[res.getRow()];
                     MapTemplate.arrMapTemplate = new MapTemplate[ZoneMap.mapNames.length];
@@ -174,7 +174,7 @@ public class GameData {
 
                 //____________LOAD NPC TEMPLATE________________//
                 System.out.println("Load npcTemplate");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `npctemplate`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `npctemplate`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     Npc.arrNpcTemplate = new NpcTemplate[res.getRow()];
                     res.beforeFirst();
@@ -205,7 +205,7 @@ public class GameData {
 
                 //____________LOAD MOB TEMPLATE________________//
                 System.out.println("Load mobTemplate");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `mobtemplate`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `mobtemplate`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     Mob.arrMobTemplate = new MobTemplate[res.getRow()];
                     res.beforeFirst();
@@ -227,7 +227,7 @@ public class GameData {
 
                 //____________LOAD SKILL OPTION TEMPLATE________________//
                 System.out.println("Load SkillOptionTemplate");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `skilloptiontemplate`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `skilloptiontemplate`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     GameData.sOptionTemplates = new SkillOptionTemplate[res.getRow()];
                     res.beforeFirst();
@@ -245,7 +245,7 @@ public class GameData {
 
                 //____________LOAD SKILS________________//
                 System.out.println("Load Skills");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `skill`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `skill`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     Skill.arrSkill = new Skill[res.getRow()];
                     res.beforeFirst();
@@ -272,7 +272,7 @@ public class GameData {
 
                 //++++++++++++++LOAD SKILL TEMPLATE++++++++++++++++++++++//
                 System.out.println("Load SkillTemplate");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `skilltemplate`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `skilltemplate`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     Skill.arrSkillTemplate = new SkillTemplate[res.getRow()];
                     res.beforeFirst();
@@ -303,7 +303,7 @@ public class GameData {
 
                 //____________LOAD NCLASS________________//
                 System.out.println("Load NClass");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `nclass`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `nclass`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     GameData.nClasss = new NClass[res.getRow()];
                     res.beforeFirst();
@@ -326,7 +326,7 @@ public class GameData {
 
                 //____________LOAD ITEM OPTION TEMPLATE________________//
                 System.out.println("Load ItemOptionTemplate");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `itemoptiontemplate`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `itemoptiontemplate`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     GameData.iOptionTemplates = new ItemOptionTemplate[res.getRow()];
                     res.beforeFirst();
@@ -345,7 +345,7 @@ public class GameData {
 
                 //____________LOAD ITEM TEMPLATE________________//
                 System.out.println("Load ItemTemplate");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `itemtemplate`;").executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `itemtemplate`;").executeQuery();
                 ItemTemplate.itemTemplates.clear();
                 n = 0;
                 while(res.next()) {
@@ -370,7 +370,7 @@ public class GameData {
 
                 //____________LOAD SHOPS________________//
                 System.out.println("Load Shops");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `shop`;").executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `shop`;").executeQuery();
                 n = 0;
                 Shop.shops.clear();
                 while(res.next()) {
@@ -399,7 +399,7 @@ public class GameData {
 
                 //_________________LOAD FLAG______________//
                 System.out.println("Load Flags");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `flags`;").executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `flags`;").executeQuery();
                 n = 0;
                 Flag.FLAGS.clear();
                 while(res.next()) {
@@ -410,7 +410,7 @@ public class GameData {
 
                 //_________________LOAD MONKEYS______________//
                 System.out.println("Load Monkeys");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `monkeys`;").executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `monkeys`;").executeQuery();
                 n = 0;
                 Monkey.MONKEYS.clear();
                 while(res.next()) {
@@ -421,7 +421,7 @@ public class GameData {
 
                 //____________LOAD HEAD________________//
                 System.out.println("Load Head");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `head`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `head`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     dragon.t.Head.idHead = new short[res.getRow()];
                     dragon.t.Head.idAvatar = new short[dragon.t.Head.idHead.length];
@@ -438,7 +438,7 @@ public class GameData {
 
                 //____________LOAD CAPTION________________//
                 System.out.println("Load Caption");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `caption`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `caption`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     GameData.strLevel = new String[res.getRow()][];
                     res.beforeFirst();
@@ -458,7 +458,7 @@ public class GameData {
 
                 //____________LOAD TASK________________//
                 System.out.println("Load Task");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `task`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `task`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     Task.arrTask = new Task[res.getRow()];
                     res.beforeFirst();
@@ -534,7 +534,7 @@ public class GameData {
 
                 //____________LOAD BAGIMAGE________________//
                 System.out.println("Load bagImage");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `bagimage`;").executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `bagimage`;").executeQuery();
                 n = 0;
                 ClanImage.images.clear();
                 while(res.next()) {
@@ -561,7 +561,7 @@ public class GameData {
 
                 //____________LOAD CHARTEMPLATE________________//
                 System.out.println("Load charTemplate");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `chartemplate`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `chartemplate`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     CharTemplate.arrCharTemplate = new CharTemplate[res.getRow()];
                     res.beforeFirst();
@@ -576,7 +576,7 @@ public class GameData {
 
                 //____________LOAD RADA________________//
                 System.out.println("Load radaTemplate");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `radatemplate`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `radatemplate`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     RadaTemplate.arrRadaTemplate = new RadaTemplate[res.getRow()];
                     res.beforeFirst();
@@ -591,7 +591,7 @@ public class GameData {
 
                 //____________LOAD DartInfo________________//
                 System.out.println("Load DartInfo");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `dartinfo`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `dartinfo`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     DartInfo.darts = new DartInfo[res.getRow()];
                     res.beforeFirst();
@@ -606,7 +606,7 @@ public class GameData {
 
                 //____________LOAD Arrow________________//
                 System.out.println("Load Arrow");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `arrow`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `arrow`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     Arrow.arrs = new Arrow[res.getRow()];
                     res.beforeFirst();
@@ -621,7 +621,7 @@ public class GameData {
 
                 //____________LOAD EffectCharPaint ________________//
                 System.out.println("Load EffectCharPaint");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `effectcharpaint`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `effectcharpaint`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     EffectCharPaint.efs = new EffectCharPaint[res.getRow()];
                     res.beforeFirst();
@@ -636,7 +636,7 @@ public class GameData {
 
                 //____________LOAD SmallImage ________________//
                 System.out.println("Load SmallImage");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `smallimage`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `smallimage`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     SmallImage.smallImg = new int[res.getRow()][5];
                     res.beforeFirst();
@@ -656,7 +656,7 @@ public class GameData {
 
                 //____________LOAD Part________________//
                 System.out.println("Load Part");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `part`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `part`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     Part.parts = new Part[res.getRow()];
                     res.beforeFirst();
@@ -671,7 +671,7 @@ public class GameData {
 
                 //____________LOAD SkillPaint ________________//
                 System.out.println("Load SkillPaint");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `skillpaint`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `skillpaint`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     SkillPaint.sks = new SkillPaint[res.getRow()];
                     res.beforeFirst();
@@ -686,7 +686,7 @@ public class GameData {
 
                 //____________LOAD ARRTASKS________________//
                 System.out.println("Load archivement");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `archivement`;").executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `archivement`;").executeQuery();
                 n = 0;
                 Archivement.arrArchivement.clear();
                 while(res.next()) {
@@ -698,7 +698,7 @@ public class GameData {
 
                 //____________LOAD EFFECTDATA________________//
                 System.out.println("Load EffectData");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `effectdata`;").executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `effectdata`;").executeQuery();
                 n = 0;
                 EffectData.effectData.clear();
                 while(res.next()) {
@@ -717,7 +717,7 @@ public class GameData {
 
                 //____________LOAD MOBDATA________________//
                 System.out.println("Load MobData");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `mobdata`;").executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `mobdata`;").executeQuery();
                 n = 0;
                 EffectData.mobData.clear();
                 while(res.next()) {
@@ -737,7 +737,7 @@ public class GameData {
 
                 //____________LOAD bgItem ________________//
                 System.out.println("Load bgItem");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `bgitem`;").executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `bgitem`;").executeQuery();
                 n = 0;
                 BgItem.aItemBg.clear();
                 while(res.next()) {
@@ -750,7 +750,7 @@ public class GameData {
 
                 //____________LOAD Arr_Head_2Fr ________________//
                 System.out.println("Load Arr_Head_2Fr");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `fhead`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `fhead`;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery();
                 if (res.last()) {
                     GameData.Arr_Head_2Fr = new int[res.getRow()][];
                     res.beforeFirst();
@@ -769,7 +769,7 @@ public class GameData {
 
                 //____________LOAD TaskEveryDay ________________//
                 System.out.println("Load TaskEveryDay");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `taskeveryday`;").executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `taskeveryday`;").executeQuery();
                 n = 0;
                 TaskEveryDay.myArrayList.clear();
                 while(res.next()) {
@@ -782,7 +782,7 @@ public class GameData {
 
                 //____________LOAD TaskClanEveryDay ________________//
                 System.out.println("Load TaskClanEveryDay");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `taskclaneveryday`;").executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `taskclaneveryday`;").executeQuery();
                 n = 0;
                 TaskEveryDay.myArrayListClan.clear();
                 while(res.next()) {
@@ -795,7 +795,7 @@ public class GameData {
 
                 //____________LOAD TaskDanhHieu ________________//
                 System.out.println("Load TaskDanhHieu");
-                res = mySQL.getConnection().prepareStatement("SELECT * FROM `taskdanhhieu`;").executeQuery();
+                res = database.getConnection().prepareStatement("SELECT * FROM `taskdanhhieu`;").executeQuery();
                 n = 0;
                 TaskDanhHieu.hTask.clear();
                 while(res.next()) {
@@ -806,7 +806,7 @@ public class GameData {
                 res.close();
                 //THE END
             } finally {
-                mySQL.close();
+                database.close();
             }
         } catch (SQLException | ParseException e) {
             System.err.println("index = "+n);

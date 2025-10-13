@@ -1,6 +1,6 @@
 package dragon.t;
 
-import Models.server.MySQL;
+import Models.server.Database;
 import Models.server.Server;
 import Models.server.Session_ME;
 import Models.server.mResources;
@@ -229,11 +229,11 @@ public class Clan {
                     m.add(charz.clanMember.joinTime);
                     jmembers.add(m);
                     try {
-                        MySQL mySQL = MySQL.create();
+                        Database database = Database.create();
                         try {
-                            mySQL.getConnection().setAutoCommit(false);
+                            database.getConnection().setAutoCommit(false);
                             try {
-                                PreparedStatement p = mySQL.getConnection().prepareStatement(String.format(
+                                PreparedStatement p = database.getConnection().prepareStatement(String.format(
                                         mResources.INSERT_CLAN,
                                         Util.gI().stringSQL(c.name),
                                         Util.gI().stringSQL(c.slogan),
@@ -255,13 +255,13 @@ public class Clan {
                                 ResultSet red = p.getGeneratedKeys();
                                 red.first();
                                 c.ID = red.getInt(1);
-                                mySQL.getConnection().commit();
+                                database.getConnection().commit();
                             } catch (SQLException e) {
-                                mySQL.getConnection().rollback();
+                                database.getConnection().rollback();
                                 e.printStackTrace();
                             }
                         } finally {
-                            mySQL.close();
+                            database.close();
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -921,11 +921,11 @@ public class Clan {
             }
         }
         try {
-            MySQL mySQL = MySQL.create();
+            Database database = Database.create();
             try {
-                mySQL.getConnection().setAutoCommit(false);
+                database.getConnection().setAutoCommit(false);
                 try {
-                    mySQL.getConnection().prepareStatement(String.format(
+                    database.getConnection().prepareStatement(String.format(
                             mResources.UPDATE_CLAN,
                             Util.gI().stringSQL(this.slogan),
                             this.date,
@@ -947,13 +947,13 @@ public class Clan {
                             this.lastReport,
                             this.ID
                     )).executeUpdate();
-                    mySQL.getConnection().commit();
+                    database.getConnection().commit();
                 } catch (SQLException e) {
-                    mySQL.getConnection().rollback();
+                    database.getConnection().rollback();
                     e.printStackTrace();
                 }
             } finally {
-                mySQL.close();
+                database.close();
             }
         } catch(SQLException e) {
             e.printStackTrace();
@@ -1010,21 +1010,21 @@ public class Clan {
             }
         }
         try {
-            MySQL mySQL = MySQL.create();
+            Database database = Database.create();
             try {
-                mySQL.getConnection().setAutoCommit(false);
+                database.getConnection().setAutoCommit(false);
                 try {
-                    mySQL.getConnection().prepareStatement(String.format(
+                    database.getConnection().prepareStatement(String.format(
                             mResources.DELETE_CLAN,
                             this.ID
                     )).executeUpdate();
-                    mySQL.getConnection().commit();
+                    database.getConnection().commit();
                 } catch(SQLException e) {
-                    mySQL.getConnection().rollback();
+                    database.getConnection().rollback();
                     e.printStackTrace();
                 }
             } finally {
-                mySQL.close();
+                database.close();
             }
             this.isDelete = true;
             Clan.removeClan(this);
