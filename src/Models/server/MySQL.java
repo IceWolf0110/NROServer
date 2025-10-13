@@ -1,8 +1,11 @@
 package Models.server;
 
+import helper.DragonHelper;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Objects;
 
 /**
  *
@@ -14,14 +17,27 @@ public class MySQL {
     private static final Object LOCK = new Object();
     private static final String URL_FORMAT = "jdbc:mariadb://%s/%s";
 
-    private MySQL(String host, String database, String user, String pass) throws SQLException {
+    private MySQL(String host, String database, String user, String password) throws SQLException {
         synchronized (LOCK) {
-            this.conn = DriverManager.getConnection(String.format(URL_FORMAT, host, database), user, pass);
+            this.conn = DriverManager.getConnection(String.format(URL_FORMAT, host, database), user, password);
         }
     }
 
     public static MySQL create() throws SQLException {
-        return new MySQL("localhost", "ngocrongz", "root", "01102000");
+        var host = DragonHelper.optionGetValue("database", "host");
+        host = Objects.requireNonNullElse(host, "localhost");
+
+        var database = DragonHelper.optionGetValue("database", "database");
+        database = Objects.requireNonNullElse(database, "ngocrongz");
+
+        var user = DragonHelper.optionGetValue("database", "user");
+        user = Objects.requireNonNullElse(user, "root");
+
+        var password = DragonHelper.optionGetValue("database", "password");
+        password = Objects.requireNonNullElse(password, "01102000");
+
+
+        return new MySQL(host, database, user, password);
     }
 
     public void close() {

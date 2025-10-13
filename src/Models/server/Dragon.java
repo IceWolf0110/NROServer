@@ -46,7 +46,7 @@ public class Dragon {
     public static boolean isEvent_VIP = false;
     public static boolean isEvent_VULAN2023 = false;
     
-    public static void main(String[] args) {
+    public static void main() {
         Util.gI().setDebug(false);
         System.out.println("DEBUG="+ Util.gI().debug);
         ServerActivity.gI().Activity();
@@ -61,7 +61,7 @@ public class Dragon {
         BgItem.init();
         GameInfo.init();
         Server.gI().initEvent();
-//        Server.gI().initAnTrom();
+        Server.gI().initAnTrom();
         Server.gI().initNpc();
         NamekBall.gI().initNamekBall();
         Server.gI().openPrize();
@@ -69,12 +69,13 @@ public class Dragon {
         LuckyRoundNew.init();
         LuyenTap.init();
         Server.gI().initBroly();
-//        Server.gI().initKuku();
-//        Server.gI().initMap_Dau_Dinh();
-//        Server.gI().initRambo();
-//        Server.gI().initBotTop();
+        Server.gI().initKuku();
+        Server.gI().initMap_Dau_Dinh();
+        Server.gI().initRambo();
+        Server.gI().initBotTop();
         Server.gI().initMabu();
-        Server.start(14445);
+        Server.
+                start(14445);
     }
 
     public static byte[] getFile(String url) {

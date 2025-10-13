@@ -1212,10 +1212,10 @@ public class Server extends Thread {
         this.close();
     }
     
-    public static void start(int post) {
-        System.out.println("Start socket post="+post);
+    public static void start(int port) {
+        System.out.println("Start socket post=" + port);
         try {
-            server = new ServerSocket(post);
+            server = new ServerSocket(port);
             id = 0;
             start = true;
             Server.gI().start();
