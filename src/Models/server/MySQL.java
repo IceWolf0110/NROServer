@@ -25,16 +25,12 @@ public class MySQL {
 
     public static MySQL create() throws SQLException {
         var host = DragonHelper.optionGetValue("database", "host");
-        host = Objects.requireNonNullElse(host, "localhost");
 
         var database = DragonHelper.optionGetValue("database", "database");
-        database = Objects.requireNonNullElse(database, "ngocrongz");
 
         var user = DragonHelper.optionGetValue("database", "user");
-        user = Objects.requireNonNullElse(user, "root");
 
         var password = DragonHelper.optionGetValue("database", "password");
-        password = Objects.requireNonNullElse(password, "01102000");
 
 
         return new MySQL(host, database, user, password);
