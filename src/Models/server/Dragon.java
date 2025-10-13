@@ -74,8 +74,7 @@ public class Dragon {
         Server.gI().initRambo();
         Server.gI().initBotTop();
         Server.gI().initMabu();
-        Server.
-                start(14445);
+        Server.start(14445);
     }
 
     public static byte[] getFile(String url) {
