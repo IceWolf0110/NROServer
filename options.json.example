@@ -1,0 +1,14 @@
+{
+  "database": {
+    "host": "kocalhost",
+    "user": "root",
+    "password": "2312000",
+    "database": "ngocrongz"
+  },
+  
+  "server": {
+    "name": "Test",
+    "host": "127.0.0.1",
+    "port": "14445"
+  }
+}
