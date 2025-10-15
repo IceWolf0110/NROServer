@@ -50,6 +50,7 @@ import dragon.t.Transport;
 import dragon.t.Util;
 import dragon.t.Waypoint;
 import dragon.t.ZoneMap;
+import helper.DragonHelper;
 import io.Message;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -89,8 +90,12 @@ public class Service {
     protected void linkDefault() {
         Message msg = null;
         try {
+            var name = DragonHelper.optionGetValue("server", "name");
+            var host = DragonHelper.optionGetValue("server", "host");
+            var port = DragonHelper.optionGetValue("server", "port");
+
             msg = messageNotLogin((byte)2);
-            msg.writer().writeUTF("Local:127.0.0.1:14445:0,0,0");
+            msg.writer().writeUTF(name + ":" + host + ":" + port + ":0,0,0");
             msg.writer().writeByte(1);
             this.session.sendMessage(msg);
         } catch (Exception e) {
