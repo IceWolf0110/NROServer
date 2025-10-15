@@ -1213,7 +1213,7 @@ public class Server extends Thread {
     }
     
     public static void start(int port) {
-        System.out.println("Start socket post=" + port);
+        System.out.println("Start socket port=" + port);
         try {
             server = new ServerSocket(port);
             id = 0;

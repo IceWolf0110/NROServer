@@ -13,6 +13,7 @@ import dragon.t.NamekBall;
 import dragon.t.SmallImage;
 import dragon.t.SuperRank;
 import dragon.t.Util;
+import helper.DragonHelper;
 import hethong.ServerActivity;
 import io.Message;
 import java.io.File;
@@ -46,7 +47,7 @@ public class Dragon {
     public static boolean isEvent_VIP = false;
     public static boolean isEvent_VULAN2023 = false;
     
-    public static void main() {
+    public void main() {
         Util.gI().setDebug(false);
         System.out.println("DEBUG="+ Util.gI().debug);
         ServerActivity.gI().Activity();
@@ -74,7 +75,12 @@ public class Dragon {
         Server.gI().initRambo();
         Server.gI().initBotTop();
         Server.gI().initMabu();
-        Server.start(14445);
+        startServer();
+    }
+
+    private void startServer() {
+        var port = DragonHelper.optionGetValue("server", "port");
+        Server.start(Integer.parseInt(port));
     }
 
     public static byte[] getFile(String url) {
@@ -105,15 +111,6 @@ public class Dragon {
             fos.close();
         } catch(IOException e) {
             e.printStackTrace();
-        }
-    }
-    
-    protected static void writeByteArray(Message msg,byte[] ab) {
-        try {
-            msg.writer().writeInt(ab.length);
-            msg.writer().write(ab);
-        } catch (IOException ex) {
-            ex.printStackTrace();
         }
     }
 }
